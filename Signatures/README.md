@@ -6,12 +6,13 @@ signature analyses. No participant data or fitted outputs are included.
 
 ## Files
 
-- `signatures/`: full-subcohort LIMMA and elastic-net scripts.
-- `signatures/gbm/hpdi/`: hPDI XGBoost scripts.
-- `signatures/gbm/updi/`: uPDI XGBoost scripts.
+- `signatures/limma`: full cohort LIMMA scripts.
+- `signatures/enet`: subcohort elastic-net scripts.
+- `signatures/xgb/hpdi/`: subcohort hPDI XGBoost scripts.
+- `signatures/xgb/updi/`: subcohort uPDI XGBoost scripts.
 
-The GBM folders use the `xgboost` R package. Keep each `00_data_prep*.R` file in
-its corresponding GBM folder: scripts 01–05 source that helper automatically.
+The XGB folders use the `xgboost` R package. Keep each `00_data_prep*.R` file in
+its corresponding XGB folder: scripts 01–05 source that helper automatically.
 The package needs no separate configuration folder or launcher.
 
 ## Before running
@@ -31,7 +32,7 @@ The package needs no separate configuration folder or launcher.
    Original R/package versions were not supplied with these scripts.
 
 Covariates are `Sex`, `Age_Recr`, `L_School`, `alc_freq`, `smoke`, `Center` and
-physical activity. LIMMA/elastic net use `PA_total_MET_quint`; GBM uses
+physical activity. LIMMA/elastic net use `PA_total_MET_quint`; XGB uses
 `PA_total_MET`. Smoking and alcohol variables must include the reference value
 `Never`. Education is recoded from `L_School` (0/1; 2/3/4; 5/missing).
 `Idepic` is an optional ID column used in elastic-net prediction exports.
@@ -75,7 +76,7 @@ steps of 0.1). It is not part of the default sequence and does not fix alpha at
 1. It reads the main uPDI prep file and writes separately under
 `updi/alpha_grid_01_to_10/`. The supplied 1.3 script evaluates the main model.
 
-### XGBoost / GBM
+### XGBoost / XGB
 
 Within each outcome's GBM folder, run the numbered scripts in order:
 
@@ -88,7 +89,7 @@ Within each outcome's GBM folder, run the numbered scripts in order:
 | `05_` | Compute SHAP values and summaries |
 
 The `00_` files are sourced helpers and should not be run independently.
-Stage A creates a timestamped run directory under `<outcome>/gbm/` and saves
+Stage A creates a timestamped run directory under `<outcome>/xgb/` and saves
 its location in `current_run_dir.txt`. Subsequent stages use that same run.
 Re-running Stage A selects a new run for subsequent stages. Keep the same data,
 row order and output root; if you move saved outputs, update the pointer file.
@@ -104,19 +105,19 @@ The supplied setting of 16 XGBoost threads is retained.
 - The elastic-net split uses seed 258 and the bootstrap uses seed 42. The
   fitting scripts do not fix a CV seed or use a shared `foldid` across alphas;
   rerunning training can therefore choose different tuning parameters.
-- Elastic-net test R2 is squared Pearson correlation; GBM test R2 is
+- Elastic-net test R2 is squared Pearson correlation; XGB test R2 is
   `1 - SSE/SST`. They are different definitions and need explicit labels when
   compared. Both calculations remain as supplied.
 - Predictive preprocessing scales age and the outcome before splitting.
   Protein preprocessing is assumed to have occurred upstream; ENET uses
-  `standardize = FALSE`, while GBM replaces missing protein values with zero.
+  `standardize = FALSE`, while XGB replaces missing protein values with zero.
   Confirm these choices and the differing physical-activity covariates against
   the manuscript. ENET's protein filter is fitted on the full training split,
   outside the subsequent internal CV folds.
 - The SHAP signed-weight calculation uses the sign of the mean SHAP
   contribution. This alone does not establish the direction of the
   protein-abundance relationship. Its numerical calculation is retained.
-- In GBM tuning, the column `proteins_used` counts all used features, including
+- In XGB tuning, the column `proteins_used` counts all used features, including
   covariates. Stage 04 separately extracts protein-only features. Historical
   commented results are annotations, not outputs verified during cleanup.
 - The five alternative hPDI scripts originally nested inside `files.zip` are
