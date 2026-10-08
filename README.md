@@ -6,8 +6,7 @@ colocalisation, enrichment and protein contextualisation.
 
 This follow-up package contains **67 R scripts in six folders**. Add these
 folders beside the existing `signatures/` folder, and use this README at the
-repository root. The previously prepared 21 signature scripts are not duplicated
-in this ZIP. No study data, fitted models or generated results are included.
+repository root. No study data, fitted models or generated results are included.
 
 The code has been organised and statically checked. It is **not yet a validated
 end-to-end reproduction of the article**. Resolve the review items below and
