@@ -2,12 +2,10 @@
 
 R analysis scripts by Peggy Ler supporting analyses of hPDI and uPDI protein
 signatures in EPIC, disease associations, Mendelian randomisation,
-colocalisation, enrichment and protein contextualisation.
+colocalisation, enrichment and protein contextualisation. 
 
-This follow-up package contains **68 R scripts in six folders**. Add these
-folders beside the existing `signatures/` folder, and use this README at the
-repository root. The previously prepared 21 signature scripts are not duplicated
-in this ZIP. No study data, fitted models or generated results are included.
+This follow-up package contains **68 R scripts in six folders**. 
+No study data, fitted models or generated results are included.
 
 The code has been organised and statically checked. It is **not yet a validated
 end-to-end reproduction of the article**. Resolve the review items below and
